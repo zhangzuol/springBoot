@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springBoot.mapper.EmployeeMapper" >
+    <resultMap id="BaseResultMap" type="com.example.springBoot.domain.Employee" >
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, name, address, position
+    </sql>
+
+    <select id="getOne" parameterType="Long" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Employee
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.example.springBoot.domain.Employee" >
+        INSERT INTO
+        Employee
+        (id,name,address,position)
+        VALUES
+        (EMP_TB_SEQ.Nextval,#{name}, #{address}, #{position})
+    </insert>
+
+    <update id="update" parameterType="com.example.springBoot.domain.Employee" >
+        UPDATE
+        Employee
+        SET
+        <if test="address != null">address = #{address},</if>
+        <if test="position != null">position = #{position},</if>
+        name = #{name}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long" >
+        DELETE FROM
+        Employee
+        WHERE
+        id =#{id}
+    </delete>
+</mapper>
